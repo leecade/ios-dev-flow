@@ -79,7 +79,7 @@ $ openssl req -new -sha256 -key private.key -out my.certSigningRequest
 
 由 apple 官方颁发, 用来证明开发者资格的证书文件, 分开发(ios_development.cer)和发布(ios_distribution.cer)两种
 
-`cer` 证书跟签名绑定只能在签名机器上使用, 如果要迁移机器需要导出为 `p12` 文件
+`cer` 证书跟开发机(私钥)绑定只能在拥有私钥的机器上使用, 如果要迁移机器需要导出为 `p12` 文件
 
 ##### 生成方法
 
