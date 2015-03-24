@@ -1,6 +1,32 @@
-# iOS 开发流程
+# iOS 开发流程笔记
 
-## 证书及准备工作
+[x] 证书知识及准备工作
+[ ] 几种开发者帐号区别
+[ ] 真机调试流程
+[ ] 内测发布流程
+[ ] App store 上架流程
+
+## 证书知识及准备工作
+
+- 什么是证书?
+
+由 apple 官方颁发, 用以证明开发者身份的特殊文件, 在 iOS 开发中主要用于代码签名, 保障 iOS 生态的健康安全, 分为开发者证书和发布者证书
+
+- 什么时候需要证书?
+
+只有在本机模拟器调试时无需代码签名, 当 App 需要在真机运行和发布时需要使用相应证书进行签名
+
+- 证书如何获得?
+
+首先需要拥有相应权限的开发者帐号, 通过在本地生成配对的密钥, 向 provisioning portal 提交公钥后换取, 后续证书在使用时会验证本地私钥
+
+- 如何对代码进行签名?
+
+在 xcode 中, 使用描述文件(provision profile 包含调试者证书, 授权设备清单, 应用ID), 在 `Build Settings` 中选择存于 `Keychain Access` 中的证书文件设置调试和发布任务时的代码签名
+
+- 我生成的私钥如何共享给团队成员?
+
+在 `Keychain Access` 中找到导入的证书, 右击导出为包含私钥的 Personal Information Exchange(.p12)文件(导出时可以创建密码), 团队成员再导入 `p12` 证书后就完整包含了证书和私钥
 
 ### 证书换取流程
 
@@ -28,7 +54,9 @@
 
 #### CSR(certificate request) 文件
 
-用于换取证书的本地私钥文件, 实际是基于 `RSA` 加密得到的当前机器的私钥凭证
+用于换取证书的公钥文件, 实际是基于 `RSA` 加密得到配对的密钥, 私钥存于 `Keychain Access` 用于签名, 公钥作为换取证书的凭证
+
+的当前机器的公钥凭证
 
 ##### 生成方法
 
@@ -80,3 +108,47 @@ $ openssl req -new -sha256 -key private.key -out my.certSigningRequest
 - 在 [开发者中心](https://developer.apple.com/devcenter/ios/index.action) "Provisioning Profiles" 面板中添加 `iOS Provisioning Profiles` 并上传刚刚生成的 `CSR` 文件, 获取 `.mobileprovision` 文件
 
 - 在 xcode 登录开发者帐号后可以连接开发者中心获取
+
+> 开发者中心
+> https://developer.apple.com/devcenter/ios/index.action
+> 
+> iOS 描述管理(配置证书、描述文件、推送服务)
+> https://developer.apple.com/ios/manage/overview/index.action
+> 
+> 切换团队(在 web 界面上死活没有找到)
+> https://developer.apple.com/account/selectTeam.action
+> 
+> iOS 上架 Appstore
+> http://itunesconnect.apple.com/
+
+## 几种开发者帐号区别
+
+> 详见: https://developer.apple.com/programs/start/ios/
+
+- [个人(individual)](https://developer.apple.com/programs/ios/) **$99**/year
+- [公司(company)](https://developer.apple.com/programs/ios/) **$99**/year
+- [企业(enterprise)](https://developer.apple.com/programs/ios/enterprise/) **$299**/year
+- [大学(University)](https://developer.apple.com/programs/start/university/) **free**
+
+关键点:
+
+- 个人帐号可以真机调试, 发布 appstore, 每年 最多为 100台设备分发
+- 公司帐号和个人帐号类似, 只有这两种帐号可以发布 appstore, 主要特权是可以添加多个开发者子账号, 但只允许主账号提交, 发布等操作, 在协同开发时比较灵活, 可以各自管理授权设备等
+- 企业帐号**无法用于 appstore 发布**, 但可以不通过 appstore 发布任意 iphone 都可以安装的应用
+- 大学帐号不能发布 appstore, 主要拥有真机调试的权限
+
+## 真机调试流程
+
+@TODO
+
+帐号
+登录 -> iOS Team Provisioning Profile
+不登录 -> 导入证书+描述
+
+## 内测发布流程
+
+@TODO
+- ad-hoc
+- in-house
+- TestFlight
+- 越狱
